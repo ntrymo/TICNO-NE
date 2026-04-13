@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TICNO EN</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f2f4f7;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+background:white;
+padding:30px;
+border-radius:20px;
+width:90%;
+max-width:400px;
+}
+
+input,select{
+width:100%;
+padding:15px;
+border-radius:12px;
+border:1px solid #ddd;
+margin-top:10px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#00a8ff;
+color:white;
+margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Bienvenue dans Chrono</h2>
+
+Votre Nom
+<input id="name">
+
+Votre Age
+<input id="age">
+
+Votre Email
+<input id="email">
+
+Durée (1 - 20 ans)
+<select id="years">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>5</option>
+<option>10</option>
+<option>20</option>
+</select>
+
+<button onclick="start()">
+Commencer
+</button>
+
+</div>
+
+<script>
+
+function start(){
+
+localStorage.setItem("name",name.value)
+localStorage.setItem("age",age.value)
+localStorage.setItem("email",email.value)
+localStorage.setItem("years",years.value)
+
+if(!localStorage.getItem("startTime")){
+localStorage.setItem("startTime",new Date().getTime())
+}
+
+location.href="app.html"
+
+}
+
+</script>
+
+</body>
+</html>
