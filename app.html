@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TECNO EN</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{margin:0;font-family:Arial;background:#f2f4f7}
+.page{display:none;padding-bottom:90px}
+.active{display:block}
+.header{padding:20px;font-size:22px;font-weight:bold}
+.username{margin:0 20px;color:#777}
+.timer{margin:20px;padding:30px;border-radius:25px;background:linear-gradient(135deg,#00c896,#00a8ff);color:white;text-align:center;font-size:20px}
+.card{background:white;margin:20px;padding:20px;border-radius:20px}
+input,select{width:100%;padding:15px;border-radius:15px;border:1px solid #eee;margin-top:10px}
+button{padding:15px;border:none;border-radius:15px;background:#00a8ff;color:white;width:100%;margin-top:10px}
+.bottom{position:fixed;bottom:10px;left:10px;right:10px;background:white;padding:15px;border-radius:25px;display:flex;justify-content:space-around}
+.bottom i{font-size:22px}
+</style>
+</head>
+
+<body>
+
+<div id="home" class="page active">
+<div class="header" id="appTitle">TECNO EN Vie
+<select id="quickLang" onchange="changeLangInstant()" style="float:left;border:none;background:transparent;font-size:16px">
+<option value="fr">🇫🇷</option>
+<option value="ar">🇸🇦</option>
+<option value="en">🇬🇧</option>
+</select>
+</div>
+<div class="username" id="userName"></div>
+<div class="timer"><div id="chrono"></div></div>
+</div>
+
+<div id="chart" class="page">
+<div class="header">📊 Votre progression</div>
+<div class="card"><canvas id="myChart"></canvas></div>
+</div>
+
+<div id="edit" class="page">
+<div class="header">✏️ Modifier vos données</div>
+<div class="card">
+Nom
+<input id="name">
+Age
+<input id="age">
+Email
+<input id="email">
+<button onclick="saveEdit()">Sauvegarder</button>
+</div>
+</div>
+
+<div id="settings" class="page">
+<div class="header">⚙️ Paramètres</div>
+
+<div class="card">Couleur Timer<input type="color" id="color"></div>
+<div class="card">Couleur Fond<input type="color" id="bg"></div>
+
+<div class="card">
+Mode sombre
+<select id="dark">
+<option value="off">Off</option>
+<option value="on">On</option>
+</select>
+</div>
+
+<div class="card">
+Taille Police
+<select id="font">
+<option value="14">Petit</option>
+<option value="16">Normal</option>
+<option value="20">Grand</option>
+</select>
+</div>
+
+<div class="card">
+Langue
+<select id="lang" onchange="changeLangInstant()">
+<option value="fr">Français</option>
+<option value="ar">العربية</option>
+<option value="en">English</option>
+</select>
+</div>
+
+<div class="card">Nom App
+<input id="appName">
+</div>
+
+<div class="card">
+<button onclick="saveSettings()">Sauvegarder</button>
+</div>
+
+</div>
+
+<div class="bottom">
+<i class="fa fa-home" onclick="showPage('home')"></i>
+<i class="fa fa-chart-line" onclick="showPage('chart')"></i>
+<i class="fa fa-pen" onclick="showPage('edit')"></i>
+<i class="fa fa-cog" onclick="showPage('settings')"></i>
+</div>
+
+<script>
+
+function showPage(p){
+document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'))
+document.getElementById(p).classList.add('active')
+}
+
+let start=localStorage.getItem("startTime")
+
+function update(){
+let diff=new Date().getTime()-start
+let s=Math.floor(diff/1000)
+let m=Math.floor(s/60)
+let h=Math.floor(m/60)
+let d=Math.floor(h/24)
+let mo=Math.floor(d/30)
+let y=Math.floor(mo/12)
+
+chrono.innerHTML=
+`${y} ans ${mo%12} mois ${d%30} jours ${h%24} h ${m%60} min ${s%60} sec`
+}
+
+setInterval(update,1000)
+
+userName.innerText="👋 "+(localStorage.getItem("name")||"")
+
+function saveEdit(){
+localStorage.setItem("name",name.value)
+localStorage.setItem("age",age.value)
+localStorage.setItem("email",email.value)
+location.reload()
+}
+
+function saveSettings(){
+localStorage.setItem("color",color.value)
+localStorage.setItem("bg",bg.value)
+localStorage.setItem("dark",dark.value)
+localStorage.setItem("font",font.value)
+localStorage.setItem("appName",appName.value)
+location.reload()
+}
+
+if(localStorage.getItem("color"))
+document.querySelector('.timer').style.background=localStorage.getItem("color")
+
+if(localStorage.getItem("bg"))
+document.body.style.background=localStorage.getItem("bg")
+
+const ctx=document.getElementById('myChart')
+new Chart(ctx,{type:'line',data:{labels:['Début','Mois1','Mois2','Mois3'],datasets:[{label:'Progression',data:[1,2,3,4]}]}})
+
+</script>
+
+</body>
+</html>
